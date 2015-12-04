@@ -1,4 +1,4 @@
-package main;
+package trees;
 
 import java.util.Random;
 
@@ -16,7 +16,7 @@ public class RandomTreeNode extends BinaryNode {
 	private static Random randomSource;
 	
 	
-	public RandomTreeNode(RandomTree otree) {
+	RandomTreeNode(RandomTree otree) {
 		leaf = true;
 		right = null;
 		left = null;

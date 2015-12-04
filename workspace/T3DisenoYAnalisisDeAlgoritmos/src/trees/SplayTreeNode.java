@@ -1,4 +1,4 @@
-package main;
+package trees;
 
 public class SplayTreeNode extends BinaryNode {
 	
@@ -13,7 +13,7 @@ public class SplayTreeNode extends BinaryNode {
 	/**
 	 * Crea un nodo raiz
 	 */
-	public SplayTreeNode(SplayTree otree) {
+	SplayTreeNode(SplayTree otree) {
 		this.otree = otree;
 		leaf = true;
 		parent = null;

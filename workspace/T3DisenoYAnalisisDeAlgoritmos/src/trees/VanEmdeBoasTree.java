@@ -1,19 +1,13 @@
-package main;
+package trees;
 
-public class AVLTree implements Tree {
+public class VanEmdeBoasTree implements Tree {
+
+	private VanEmdeBoasNode root;	
 	
-	private AVLTreeNode root;
-	
-	public AVLTree() {
-		root = new AVLTreeNode(this);
-	}
-	
-	public void setRoot(AVLTreeNode root) {
-		this.root = root;
-	}
-	
-	public AVLTreeNode getRoot() {
-		return root;
+	public VanEmdeBoasTree(int maxInt) throws Exception {
+		if (!isPowerOf2(maxInt))
+			throw new Exception("Debe inicializarse con una potencia de dos");
+		root = new VanEmdeBoasNode(maxInt);
 	}
 	
 	@Override
@@ -31,12 +25,16 @@ public class AVLTree implements Tree {
 		root.deleteM(i);
 	}
 	
-	@Override
-	public boolean equals(Object o) {
-		if (!(o instanceof AVLTree))
+	private static boolean isPowerOf2(int x) {
+		if(x <= 0)
 			return false;
-		AVLTree compared = (AVLTree) o;
-		return root.equals(compared.root);
+		
+		while(x % 2 == 0)
+			x = x / 2;
+		
+		if(x > 1)
+			return false;
+		return true;
 	}
 
 	@Override

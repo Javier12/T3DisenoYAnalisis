@@ -1,21 +1,21 @@
-package main;
+package trees;
 
 public class AVLTreeNode extends BinaryNode {
 	
 	private AVLTree otree;
 	
-	private boolean leaf;
+	private boolean leaf; 
 	private AVLTreeNode parent;
 	private AVLTreeNode right;
-	private AVLTreeNode left;
-	private int key;
-	private int height;
+	private AVLTreeNode left; 
+	private int key; 
+	private int height; 
 	
 	
 	/**
 	 * Usado para construir el nodo raiz
 	 */
-	public AVLTreeNode(AVLTree otree) {
+	AVLTreeNode(AVLTree otree) {
 		this.otree = otree;
 		leaf = true;
 		parent = null;

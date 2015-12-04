@@ -1,4 +1,4 @@
-package main;
+package trees;
 
 public class SplayTree implements Tree {
 	

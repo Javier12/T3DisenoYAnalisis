@@ -3,7 +3,7 @@ package test;
 import org.junit.Before;
 import org.junit.Test;
 
-import main.ABBTree;
+import trees.ABBTree;
 
 public class ABBBasicTreeTest extends BasicTreeTest {
 

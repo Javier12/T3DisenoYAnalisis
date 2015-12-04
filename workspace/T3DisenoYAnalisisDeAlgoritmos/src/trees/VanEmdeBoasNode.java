@@ -1,4 +1,4 @@
-package main;
+package trees;
 
 public class VanEmdeBoasNode {
 
@@ -16,7 +16,7 @@ public class VanEmdeBoasNode {
 	    return 31 - Integer.numberOfLeadingZeros(n);
 	}
 	
-	public VanEmdeBoasNode(int size) {
+	VanEmdeBoasNode(int size) {
 		max = null;
 		min = null;
 		universo = size;

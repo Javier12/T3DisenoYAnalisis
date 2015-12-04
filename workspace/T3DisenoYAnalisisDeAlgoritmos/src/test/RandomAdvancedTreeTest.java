@@ -9,8 +9,8 @@ import java.util.Random;
 import org.junit.Before;
 import org.junit.Test;
 
-import main.RandomTree;
-import main.RandomTreeNode;
+import trees.RandomTree;
+import trees.RandomTreeNode;
 
 public class RandomAdvancedTreeTest extends BasicTreeTest {
 	

@@ -3,7 +3,7 @@ package test;
 import org.junit.Before;
 import org.junit.Test;
 
-import main.SplayTree;
+import trees.SplayTree;
 
 public class SplayBasicTreeTest extends BasicTreeTest {
 

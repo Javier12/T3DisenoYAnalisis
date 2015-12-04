@@ -1,4 +1,4 @@
-package main;
+package trees;
 
 public class ABBTree extends BinaryNode implements Tree {
 
@@ -15,7 +15,7 @@ public class ABBTree extends BinaryNode implements Tree {
 		left = null;
 	}
 	
-	public ABBTree(ABBTree parent) {
+	private ABBTree(ABBTree parent) {
 		leaf = true;
 		right = null;
 		left = null;

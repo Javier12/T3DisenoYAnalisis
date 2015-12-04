@@ -1,18 +1,18 @@
-package main;
+package trees;
 
-public class RandomTree implements Tree {
-
-	private RandomTreeNode root;
+public class AVLTree implements Tree {
 	
-	public RandomTree() {
-		root = new RandomTreeNode(this);
+	private AVLTreeNode root;
+	
+	public AVLTree() {
+		root = new AVLTreeNode(this);
 	}
 	
-	public void setRoot(RandomTreeNode root) {
+	public void setRoot(AVLTreeNode root) {
 		this.root = root;
 	}
 	
-	public RandomTreeNode getRoot() {
+	public AVLTreeNode getRoot() {
 		return root;
 	}
 	
@@ -29,6 +29,14 @@ public class RandomTree implements Tree {
 	@Override
 	public void delete(int i) {
 		root.deleteM(i);
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof AVLTree))
+			return false;
+		AVLTree compared = (AVLTree) o;
+		return root.equals(compared.root);
 	}
 
 	@Override

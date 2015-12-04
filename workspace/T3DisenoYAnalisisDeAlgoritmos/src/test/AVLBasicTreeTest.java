@@ -3,7 +3,7 @@ package test;
 import org.junit.Before;
 import org.junit.Test;
 
-import main.AVLTree;
+import trees.AVLTree;
 
 public class AVLBasicTreeTest extends BasicTreeTest {
 

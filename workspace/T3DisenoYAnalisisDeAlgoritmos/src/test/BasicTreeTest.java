@@ -8,7 +8,7 @@ import java.util.Random;
 
 import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 
-import main.Tree;
+import trees.Tree;
 
 public abstract class BasicTreeTest {
 	

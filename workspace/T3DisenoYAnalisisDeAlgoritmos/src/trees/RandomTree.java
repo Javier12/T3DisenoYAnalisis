@@ -1,13 +1,19 @@
-package main;
+package trees;
 
-public class VanEmdeBoasTree implements Tree {
+public class RandomTree implements Tree {
 
-	private VanEmdeBoasNode root;	
+	private RandomTreeNode root;
 	
-	public VanEmdeBoasTree(int maxInt) throws Exception {
-		if (!isPowerOf2(maxInt))
-			throw new Exception("Debe inicializarse con una potencia de dos");
-		root = new VanEmdeBoasNode(maxInt);
+	public RandomTree() {
+		root = new RandomTreeNode(this);
+	}
+	
+	public void setRoot(RandomTreeNode root) {
+		this.root = root;
+	}
+	
+	public RandomTreeNode getRoot() {
+		return root;
 	}
 	
 	@Override
@@ -23,18 +29,6 @@ public class VanEmdeBoasTree implements Tree {
 	@Override
 	public void delete(int i) {
 		root.deleteM(i);
-	}
-	
-	private static boolean isPowerOf2(int x) {
-		if(x <= 0)
-			return false;
-		
-		while(x % 2 == 0)
-			x = x / 2;
-		
-		if(x > 1)
-			return false;
-		return true;
 	}
 
 	@Override

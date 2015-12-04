@@ -9,8 +9,8 @@ import java.util.Random;
 import org.junit.Before;
 import org.junit.Test;
 
-import main.AVLTree;
-import main.AVLTreeNode;
+import trees.AVLTree;
+import trees.AVLTreeNode;
 
 public class AVLAdvancedTreeTest extends BasicTreeTest {
 	

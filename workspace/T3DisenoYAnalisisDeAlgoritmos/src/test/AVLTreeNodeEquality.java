@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import main.AVLTree;
+import trees.AVLTree;
 
 public class AVLTreeNodeEquality {
 

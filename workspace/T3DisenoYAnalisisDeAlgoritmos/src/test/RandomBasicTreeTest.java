@@ -3,7 +3,7 @@ package test;
 import org.junit.Before;
 import org.junit.Test;
 
-import main.RandomTree;
+import trees.RandomTree;
 
 public class RandomBasicTreeTest extends BasicTreeTest {
 

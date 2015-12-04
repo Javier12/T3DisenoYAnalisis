@@ -1,4 +1,4 @@
-package main;
+package trees;
 
 public interface Tree {
 

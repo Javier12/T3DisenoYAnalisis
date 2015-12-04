@@ -3,7 +3,7 @@ package test;
 import org.junit.Before;
 import org.junit.Test;
 
-import main.VanEmdeBoasTree;
+import trees.VanEmdeBoasTree;
 
 
 public class EmdeBoasBasicTreeTest extends BasicTreeTest {
