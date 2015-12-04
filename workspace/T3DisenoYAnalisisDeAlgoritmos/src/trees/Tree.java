@@ -19,7 +19,7 @@ public interface Tree {
 	 * Borra el elemento i de el arbol
 	 * @param i el elemento a borrar
 	 */
-	public void delete(int i);
+	public boolean delete(int i);
 	
 	/**
 	 * Obtiene la clave mas grande contenida en el arbol

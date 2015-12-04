@@ -52,13 +52,13 @@ public class ABBTree extends BinaryNode implements Tree {
 	}
 
 	@Override
-	public void delete(int i) {
+	public boolean delete(int i) {
 		if (leaf)
-			return;
+			return false;
 		if (key == i) {
 			if (right.leaf == true && left.leaf == true) {
 				leaf = true;
-				return;
+				return true;
 			}
 			if (right.leaf == true || left.leaf == true) {
 				if (left.leaf == false) {
@@ -69,6 +69,7 @@ public class ABBTree extends BinaryNode implements Tree {
 					auxLeft.left.parent = this;
 					auxLeft.right.parent = this;
 					auxLeft = null;
+					return true;
 				} else {
 					key = right.key;
 					ABBTree auxRight = right;
@@ -77,16 +78,17 @@ public class ABBTree extends BinaryNode implements Tree {
 					auxRight.left.parent = this;
 					auxRight.right.parent = this;
 					auxRight = null;
+					return true;
 				}
 			} else {
 				ABBTree next = findNext(true);
 				key = next.key;
-				next.delete(key);
+				return next.delete(key);
 			}
 		} else if (i > key) {
-			right.delete(i);
+			return right.delete(i);
 		} else {
-			left.delete(i);
+			return left.delete(i);
 		}
 		
 	}

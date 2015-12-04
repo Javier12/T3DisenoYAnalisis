@@ -42,7 +42,7 @@ public class AVLTreeNode extends BinaryNode {
 	}
 	
 	public void insertM(int i) {
-		System.out.println("Inseting: " + i);
+		//System.out.println("Inseting: " + i);
 		if (leaf) {
 			leaf = false;
 			right = new AVLTreeNode(this);
@@ -68,9 +68,9 @@ public class AVLTreeNode extends BinaryNode {
 		AVLTreeNode padre = parent;
 		
 		while (padre != null) {
-			System.out.println("Izq: " + Math.abs(padre.left.height));
-			System.out.println("Rig: " + Math.abs(padre.right.height));
-			System.out.println("YO: " + padre.key);
+			//System.out.println("Izq: " + Math.abs(padre.left.height));
+			//System.out.println("Rig: " + Math.abs(padre.right.height));
+			//System.out.println("YO: " + padre.key);
 			int originalHeight = padre.height;
 			padre.height = Math.max(padre.left.height, padre.right.height) + 1;
 			// PUede que mantenga su altura. Lo relevante es que su factor de balance no varie
@@ -135,9 +135,9 @@ public class AVLTreeNode extends BinaryNode {
 		AVLTreeNode padre = parent;
 		
 		while (padre != null) {
-			System.out.println("Izq: " + Math.abs(padre.left.height));
-			System.out.println("Rig: " + Math.abs(padre.right.height));
-			System.out.println("YO: " + padre.key);
+			//System.out.println("Izq: " + Math.abs(padre.left.height));
+			//System.out.println("Rig: " + Math.abs(padre.right.height));
+			//System.out.println("YO: " + padre.key);
 			int originalHeight = padre.height;
 			padre.height = Math.max(padre.left.height, padre.right.height) + 1;
 			// PUede que mantenga su altura. Lo relevante es que su factor de balance no varie
@@ -150,11 +150,11 @@ public class AVLTreeNode extends BinaryNode {
 					// Estoy desbalanceado hacia la derecha
 					if (padre.right.right.height >= padre.right.left.height) {
 						// Desbalanceado doble derecha
-						System.out.println("Rotate right right");
+						//System.out.println("Rotate right right");
 						padre.right.rotateLeft();
 					} else {
 						// Desbalanceado derecha izquierda
-						System.out.println("Rotate right left");
+						//System.out.println("Rotate right left");
 						padre.right.left.rotateRight();
 						padre.right.rotateLeft();
 					}
@@ -162,11 +162,11 @@ public class AVLTreeNode extends BinaryNode {
 					// Estoy desbalanceado hacia la izquierda
 					if (padre.left.left.height >= padre.left.right.height) {
 						// Desbalanceado doble izquierda
-						System.out.println("Rotate left left");
+						//System.out.println("Rotate left left");
 						padre.left.rotateRight();
 					} else {
 						// Desbalanceado izquierda derecha
-						System.out.println("Rotate left right");
+						//System.out.println("Rotate left right");
 						padre.left.right.rotateLeft();
 						padre.left.rotateRight();
 					}
@@ -180,11 +180,9 @@ public class AVLTreeNode extends BinaryNode {
 		
 	}
 
-	public void deleteM(int i) {
-		System.out.println("try delete: " + i);
+	public boolean deleteM(int i) {
 		if (leaf)
-			return;
-		System.out.println("Deleting: " + i);
+			return false;
 		if (key == i) {
 			if (right.leaf == true && left.leaf == true) {
 				leaf = true;
@@ -194,7 +192,7 @@ public class AVLTreeNode extends BinaryNode {
 				left = null;
 				// Debo empezar a hacer retrace desde mi hermano
 				retraceFromBrother();
-				return;
+				return true;
 			}
 			if (right.leaf == true || left.leaf == true) {
 				if (left.leaf == false) {
@@ -208,6 +206,7 @@ public class AVLTreeNode extends BinaryNode {
 					auxLeft = null;
 					height = 1;
 					retraceFromBrother();
+					return true;
 				} else {
 					AVLTreeNode auxRight = right;
 					left = null;
@@ -219,16 +218,17 @@ public class AVLTreeNode extends BinaryNode {
 					auxRight = null;
 					height = 1;
 					retraceFromBrother();
+					return true;
 				}
 			} else {
 				AVLTreeNode next = findNextM(true);
 				key = next.key;
-				next.deleteM(key);
+				return next.deleteM(key);
 			}
 		} else if (i > key) {
-			right.deleteM(i);
+			return right.deleteM(i);
 		} else {
-			left.deleteM(i);
+			return left.deleteM(i);
 		}
 	}
 	
@@ -269,7 +269,7 @@ public class AVLTreeNode extends BinaryNode {
 				this.parent = abueloOriginal;
 				abueloOriginal.height = Math.max(abueloOriginal.left.height, abueloOriginal.right.height) + 1;
 			} else {
-				System.out.println("Cambio root rleft");
+				//System.out.println("Cambio root rleft");
 				otree.setRoot(this);
 				this.parent = null;
 			}
@@ -299,7 +299,7 @@ public class AVLTreeNode extends BinaryNode {
 				this.parent = abueloOriginal;
 				abueloOriginal.height = Math.max(abueloOriginal.left.height, abueloOriginal.right.height) + 1;
 			} else {
-				System.out.println("Cambio root rright");
+				//System.out.println("Cambio root rright");
 				otree.setRoot(this);
 				this.parent = null;
 			}
@@ -332,7 +332,7 @@ public class AVLTreeNode extends BinaryNode {
 			return false;
 		// Cada uno es igual
 		AVLTreeNode compared = (AVLTreeNode) o;
-		System.out.println("Compared: " + this.key);
+		//System.out.println("Compared: " + this.key);
 		if (this.height == compared.height && this.key == compared.key && this.leaf == compared.leaf) {
 			if (this.right == null && this.left == null)
 				return compared.right == null && compared.left == null;
@@ -342,9 +342,6 @@ public class AVLTreeNode extends BinaryNode {
 				return compared.left == null && this.right.equals(compared.right);
 			return this.left.equals(compared.left) && this.right.equals(compared.right);
 		} else {
-			System.out.println("Diferencia en: ");
-			System.out.println("this: " + this.key);
-			System.out.println("compared: " + compared.key);
 			return false;
 		}
 	}

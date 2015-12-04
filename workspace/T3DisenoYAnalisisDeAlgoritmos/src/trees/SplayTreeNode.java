@@ -67,9 +67,9 @@ public class SplayTreeNode extends BinaryNode {
 		}
 	}
 	
-	public void deleteM(int i) {
+	public boolean deleteM(int i) {
 		if (leaf)
-			return;
+			return false;
 		if (key == i) {
 			if (right.leaf == true && left.leaf == true) {
 				leaf = true;
@@ -78,7 +78,7 @@ public class SplayTreeNode extends BinaryNode {
 				left = null;
 				if (parent != null)
 					parent.moveToTop();
-				return;
+				return true;
 			}
 			if (right.leaf == true || left.leaf == true) {
 				if (left.leaf == false) {
@@ -92,6 +92,7 @@ public class SplayTreeNode extends BinaryNode {
 					auxLeft = null;
 					if (parent != null)
 						parent.moveToTop();
+					return true;
 				} else {
 					SplayTreeNode auxRight = right;
 					left = null;
@@ -103,16 +104,17 @@ public class SplayTreeNode extends BinaryNode {
 					auxRight = null;
 					if (parent != null)
 						parent.moveToTop();
+					return true;
 				}
 			} else {
 				SplayTreeNode next = findNextM(true);
 				key = next.key;
-				next.deleteM(key);
+				return next.deleteM(key);
 			}
 		} else if (i > key) {
-			right.deleteM(i);
+			return right.deleteM(i);
 		} else {
-			left.deleteM(i);
+			return left.deleteM(i);
 		}
 	}
 	

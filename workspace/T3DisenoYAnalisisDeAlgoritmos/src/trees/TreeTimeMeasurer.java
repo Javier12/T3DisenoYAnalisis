@@ -15,18 +15,18 @@ public class TreeTimeMeasurer {
 		return (end - start);
 	}
 	
-	public long measureFind(int i) {
+	public TuplaTimeOperationResult measureFind(int i) {
 		long start = System.nanoTime();
-		tree.find(i);
+		boolean operationResult = tree.find(i);
 		long end = System.nanoTime();
-		return (end - start);
+		return new TuplaTimeOperationResult((end - start), operationResult);
 	}
 	
-	public long measureDelete(int i) {
+	public TuplaTimeOperationResult measureDelete(int i) {
 		long start = System.nanoTime();
-		tree.delete(i);
+		boolean operationResult = tree.delete(i);
 		long end = System.nanoTime();
-		return (end - start);
+		return new TuplaTimeOperationResult((end - start), operationResult);
 	}
 	
 	public long measureMax() {
@@ -55,6 +55,27 @@ public class TreeTimeMeasurer {
 		tree.getPrevious(i);
 		long end = System.nanoTime();
 		return (end - start);
+	}
+	
+	public class TuplaTimeOperationResult {
+		
+		private long time;
+		private boolean operationResult;
+		
+		public TuplaTimeOperationResult(long time, boolean operationResult) {
+			this.time = time;
+			this.operationResult = operationResult;
+		}
+		
+		public long getTime() {
+			return time;
+		}
+		
+		public boolean getOperationResult() {
+			return operationResult;
+		}
+		
+		
 	}
 
 }

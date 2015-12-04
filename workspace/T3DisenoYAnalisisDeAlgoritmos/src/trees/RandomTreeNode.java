@@ -174,14 +174,14 @@ public class RandomTreeNode extends BinaryNode {
 		}
 	}
 
-	public void deleteM(int i) {
+	public boolean deleteM(int i) {
 		if (leaf)
-			return;
+			return false;
 		if (key == i) {
 			if (right.leaf == true && left.leaf == true) {
 				leaf = true;
 				size = 0;
-				return;
+				return true;
 			}
 			if (right.leaf == true || left.leaf == true) {
 				if (left.leaf == false) {
@@ -190,24 +190,26 @@ public class RandomTreeNode extends BinaryNode {
 					left = auxLeft.left;
 					right = auxLeft.right;
 					size = left.size + right.size + 1;
+					return true;
 				} else {
 					key = right.key;
 					RandomTreeNode auxRight = right;
 					left = auxRight.left;
 					right = auxRight.right;	
 					size = left.size + right.size + 1;
+					return true;
 				}
 			} else {
 				RandomTreeNode next = findNextWithDecreaseSize(true);
 				key = next.key;
-				next.deleteM(key);
+				return next.deleteM(key);
 			}
 		} else if (i > key) {
 			size--;
-			right.deleteM(i);
+			return right.deleteM(i);
 		} else {
 			size--;
-			left.deleteM(i);
+			return left.deleteM(i);
 		}
 		
 	}

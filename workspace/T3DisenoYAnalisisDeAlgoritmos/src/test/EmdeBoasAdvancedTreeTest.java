@@ -80,4 +80,14 @@ public class EmdeBoasAdvancedTreeTest {
 		assertTrue(mtree.find(toAdd));
 	}
 	
+	@Test
+	public void testBorradoInexistente() throws Exception {
+		mtree = new VanEmdeBoasTree(1048576);
+		mtree.insert(100);
+		assertTrue(mtree.find(100));
+		mtree.delete(101);
+		assertTrue(mtree.find(100));
+		assertFalse(mtree.find(99));
+	}
+	
 }

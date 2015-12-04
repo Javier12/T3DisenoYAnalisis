@@ -19,8 +19,8 @@ public class SplayTree implements Tree {
 	}
 
 	@Override
-	public void delete(int i) {
-		root.deleteM(i);
+	public boolean delete(int i) {
+		return root.deleteM(i);
 	}
 	
 	public SplayTreeNode getRoot() {

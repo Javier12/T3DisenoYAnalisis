@@ -21,8 +21,11 @@ public class VanEmdeBoasTree implements Tree {
 	}
 
 	@Override
-	public void delete(int i) {
+	public boolean delete(int i) {
+		if (!find(i))
+			return false;
 		root.deleteM(i);
+		return true;
 	}
 	
 	private static boolean isPowerOf2(int x) {

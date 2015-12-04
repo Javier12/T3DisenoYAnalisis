@@ -31,17 +31,13 @@ public abstract class BinaryNode {
 	
 	public BinaryNode findTree(int i) {
 		if (isLeaf()) {
-			System.out.println("HI: " + getKey());
 			return this;
 		}
 		if (i == getKey()) {
-			System.out.println("MI: " + getKey());
 			return this;
 		} else if (i > getKey()) {
-			System.out.println("RI: " + getKey());
 			return getRight().findTree(i);
 		} else {
-			System.out.println("LI: " + getKey());
 			return getLeft().findTree(i);
 		}
 	}
@@ -56,7 +52,6 @@ public abstract class BinaryNode {
 			while (current.getParent() != null) {
 				BinaryNode currentParent = current.getParent();
 				if (currentParent.getLeft() == current) {
-					System.out.println("Current parent key: " + currentParent.getKey());
 					return currentParent.getKey();
 				}
 				current = currentParent;
