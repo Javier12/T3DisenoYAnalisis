@@ -25,6 +25,7 @@ public class Main {
 		//----------------
 		//----Prueba 1----
 		//----------------
+		/*
 		System.out.println("Probando ABB universo 2^21");
 		testStack(0, (int) Math.pow(2, 21), ABB);
 		System.out.println("Probando AVL universo 2^21");
@@ -63,10 +64,26 @@ public class Main {
 		testSegunda(0, (int) Math.pow(2, 25), SPL);
 		System.out.println("Probando Segunda VanEmdeBoas universo 2^25");
 		testSegunda(0, (int) Math.pow(2, 25), VEB);
-		
+		*/
 		//----------------
 		//----Prueba 3----
 		//----------------
+		System.out.println("Probando Tercera ABB universo 2^21");
+		testTercera(0, (int) Math.pow(2, 21), ABB);
+		System.out.println("Probando Tercera AVL universo 2^21");
+		testTercera(0, (int) Math.pow(2, 21), AVL);
+		System.out.println("Probando Tercera Splay universo 2^21");
+		testTercera(0, (int) Math.pow(2, 21), SPL);
+		System.out.println("Probando Tercera VanEmdeBoas universo 2^21");
+		testTercera(0, (int) Math.pow(2, 21), VEB);
+		System.out.println("Probando Tercera ABB universo 2^25");
+		testTercera(0, (int) Math.pow(2, 25), ABB);
+		System.out.println("Probando Tercera AVL universo 2^25");
+		testTercera(0, (int) Math.pow(2, 25), AVL);
+		System.out.println("Probando Tercera Splay universo 2^25");
+		testTercera(0, (int) Math.pow(2, 25), SPL);
+		System.out.println("Probando Tercera VanEmdeBoas universo 2^25");
+		testTercera(0, (int) Math.pow(2, 25), VEB);
 		
 		
 		while (true) ;
@@ -237,6 +254,13 @@ public class Main {
 		writer.close();
 	}
 	
+	/**
+	 * Esto no esta corriendo mal por los arboles. Esta corriendo mal por los linked list
+	 * @param universoStart
+	 * @param universoEnd
+	 * @param tree
+	 * @throws Exception
+	 */
 	public static void testTercera(int universoStart, int universoEnd, int tree) throws Exception {
 		Random r = new Random();
 		long s = System.nanoTime();
@@ -247,12 +271,15 @@ public class Main {
 		long[] antesesorResults = new long[(universoEnd - universoStart + 1)];
 		long maxResult;
 		long minResult;
-		long[] succesfullSearchResults = new long[(universoEnd - universoStart)*10 + 1];
-		long[] succesfullDeleteResults = new long[(universoEnd - universoStart)*10 + 1];
-		long[] unsuccesfullDeleteResults = new long[(universoEnd - universoStart)*10 + 1];
-		int succesfullSearches = 0;
-		int succesfullDeletes = 0;
-		int unsuccesfullDeletes = 0;
+		long[] hotSearchResults = new long[(universoEnd - universoStart)*10 + 1];
+		long[] normalSearchResults = new long[(universoEnd - universoStart)*10 + 1];
+		long[] lowSearchResults = new long[(universoEnd - universoStart)*10 + 1];
+		long[] succesfullHotDeleteResults = new long[(universoEnd - universoStart)*10 + 1];
+		long[] unsuccesfullHotDeleteResults = new long[(universoEnd - universoStart)*10 + 1];
+		long[] succesfullNormalDeleteResults = new long[(universoEnd - universoStart)*10 + 1];
+		long[] unsuccesfullNormalDeleteResults = new long[(universoEnd - universoStart)*10 + 1];
+		long[] succesfullLowDeleteResults = new long[(universoEnd - universoStart)*10 + 1];
+		long[] unsuccesfullLowDeleteResults = new long[(universoEnd - universoStart)*10 + 1];
 		
 		LinkedList<Integer> shuffleInsert = new LinkedList<>();
 		for (int i = universoStart; i <= universoEnd; i++) {
@@ -289,10 +316,89 @@ public class Main {
 		LinkedList<Integer> hot = new LinkedList<>();
 		LinkedList<Integer> normal = new LinkedList<>();
 		LinkedList<Integer> low = new LinkedList<>();
+		int shuffleSize = shuffleInsert.size();
 		int counter = 0;
 		for (Integer mint : shuffleInsert) {
-			// if (counter < )
+			if (counter > shuffleSize*0.9) {
+				hot.add(mint);
+			} else if (counter > shuffleSize*0.5) {
+				normal.add(mint);
+			} else {
+				low.add(mint);
+			}
+			counter++;
 		}
+		int hotSize = hot.size();
+		int normalSize = normal.size();
+		int lowSize = low.size();
+		
+		int hotSearchCounter = 0;
+		int normalSearchCounter = 0;
+		int lowSearchCounter = 0;
+		// Busqueda
+		for (int i = 0; i <= (universoEnd - universoStart)*10; i++) {
+			int hotNormalLow = r.nextInt(10);
+			if (hotNormalLow <= 5) {
+				int toSearch = hot.get(r.nextInt(hotSize));
+				hotSearchResults[hotSearchCounter] = treeMeasurer.measureFind(toSearch).getTime();
+				hotSearchCounter++;
+			} else if (hotNormalLow <= 8) {
+				int toSearch = normal.get(r.nextInt(normalSize));
+				normalSearchResults[normalSearchCounter] = treeMeasurer.measureFind(toSearch).getTime();
+				normalSearchCounter++;
+			} else {
+				int toSearch = low.get(r.nextInt(lowSize));
+				lowSearchResults[lowSearchCounter] = treeMeasurer.measureFind(toSearch).getTime();
+				lowSearchCounter++;
+			}
+			if (i % 100000 == 0)
+				System.out.println("Pasa algo!");
+		}
+		System.out.println("Busqueda terminada");
+		// Borrado;
+		int hotSDeleteCounter = 0;
+		int hotFDeleteCounter = 0;
+		int normalSDeleteCounter = 0;
+		int normalFDeleteCounter = 0;
+		int lowSDeleteCounter = 0;
+		int lowFDeleteCounter = 0;
+		for (int i = 0; i <= (universoEnd - universoStart)*10; i++) {
+			int hotNormalLow = r.nextInt(10);
+			if (hotNormalLow <= 5) {
+				int toDelete = hot.get(r.nextInt(hotSize));
+				TuplaTimeOperationResult tupla = treeMeasurer.measureDelete(toDelete);
+				if (tupla.getOperationResult()) {
+					succesfullHotDeleteResults[hotSDeleteCounter] = tupla.getTime();
+					hotSDeleteCounter++;
+				} else {
+					unsuccesfullHotDeleteResults[hotFDeleteCounter] = tupla.getTime();
+					hotFDeleteCounter++;
+				}
+			} else if (hotNormalLow <= 8) {
+				int toDelete = normal.get(r.nextInt(normalSize));
+				TuplaTimeOperationResult tupla = treeMeasurer.measureDelete(toDelete);
+				if (tupla.getOperationResult()) {
+					succesfullNormalDeleteResults[normalSDeleteCounter] = tupla.getTime();
+					normalSDeleteCounter++;
+				} else {
+					unsuccesfullNormalDeleteResults[normalFDeleteCounter] = tupla.getTime();
+					normalFDeleteCounter++;
+				}
+			} else {
+				int toDelete = low.get(r.nextInt(lowSize));
+				TuplaTimeOperationResult tupla = treeMeasurer.measureDelete(toDelete);
+				if (tupla.getOperationResult()) {
+					succesfullLowDeleteResults[lowSDeleteCounter] = tupla.getTime();
+					lowSDeleteCounter++;
+				} else {
+					unsuccesfullLowDeleteResults[lowFDeleteCounter] = tupla.getTime();
+					lowFDeleteCounter++;
+				}
+			}
+		}
+		System.out.println("Borrado terminado");
+		
+		
 		
 		
 		PrintWriter writer = new PrintWriter("results_test_3_universo_" + (universoEnd - universoStart + 1) + "_" + getStringTreeForInt(tree) + ".txt", "UTF-8");
@@ -302,9 +408,21 @@ public class Main {
 		writer.println("Tiempo buscar minimo: " + minResult);
 		writer.println("Tiempos (sum " + (universoEnd - universoStart + 1) + ") buscar sucesor: " + getArraySum(sucesorResults));
 		writer.println("Tiempos (sum " + (universoEnd - universoStart + 1) + ") buscar antesesor: " + getArraySum(antesesorResults));
-		writer.println("Tiempos (sum " + succesfullSearches + " ) busqueda succesfull: " + getArraySum(succesfullSearchResults));
-		writer.println("Tiempos (sum " + succesfullDeletes + ") borrado succesfull:" + getArraySum(succesfullDeleteResults));
-		writer.println("Tiempos (sum " + unsuccesfullDeletes + ") borrado unsuccefull:" + getArraySum(unsuccesfullDeleteResults));
+		
+		writer.println("Tiempos (sum " + hotSearchCounter + " ) busqueda hot: " + getArraySum(hotSearchResults));
+		writer.println("Tiempos (sum " + normalSearchCounter + " ) busqueda normal: " + getArraySum(normalSearchResults));
+		writer.println("Tiempos (sum " + lowSearchCounter + " ) busqueda low: " + getArraySum(lowSearchResults));
+		
+		
+		writer.println("Tiempos (sum " + hotSDeleteCounter + ") borrado succesfull hot:" + getArraySum(succesfullHotDeleteResults));
+		writer.println("Tiempos (sum " + hotFDeleteCounter + ") borrado unsuccefull hot:" + getArraySum(unsuccesfullHotDeleteResults));
+		
+		writer.println("Tiempos (sum " + normalSDeleteCounter + ") borrado succesfull normal:" + getArraySum(succesfullNormalDeleteResults));
+		writer.println("Tiempos (sum " + normalFDeleteCounter + ") borrado unsuccefull normal:" + getArraySum(unsuccesfullNormalDeleteResults));
+		
+		writer.println("Tiempos (sum " + lowSDeleteCounter + ") borrado succesfull low:" + getArraySum(succesfullLowDeleteResults));
+		writer.println("Tiempos (sum " + lowFDeleteCounter + ") borrado unsuccefull low:" + getArraySum(unsuccesfullLowDeleteResults));
+		
 		writer.close();
 	}
 	
