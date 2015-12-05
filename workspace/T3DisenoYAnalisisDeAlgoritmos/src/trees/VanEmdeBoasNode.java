@@ -64,17 +64,17 @@ public class VanEmdeBoasNode {
 	}
 	
 	private void emptyInsertM(Integer toInsert) {
-		System.out.println("Toinsert: " + toInsert);
+		//System.out.println("Toinsert: " + toInsert);
 		min = toInsert;
 		max = toInsert;
 	}
 	
 	public void insertM(Integer toInsert) {
 		if (min == null) {
-			System.out.println("What?");
+			//System.out.println("What?");
 			emptyInsertM(toInsert);
 		} else {
-			System.out.println("Algo");
+			//System.out.println("Algo");
 			if (toInsert < min) {
 				//min = toInsert;
 				int maux = toInsert;
@@ -82,9 +82,6 @@ public class VanEmdeBoasNode {
 				min = maux;
 			}
 			if (universo > 2) {
-				System.out.println("Clusters size: " + clusters.length);
-				System.out.println("To Insert: " + toInsert);
-				System.out.println("High to insert: " + high(toInsert));
 				if (clusters[high(toInsert)].min == null) {
 					summary.insertM(high(toInsert));
 					clusters[high(toInsert)].emptyInsertM(low(toInsert));
@@ -125,7 +122,8 @@ public class VanEmdeBoasNode {
 		} else {
 		
 			if (toDelete.equals(min)) {
-				//System.out.println("O3");
+				if (summary == null)
+					return;
 				int firstCluster = summary.min;
 				toDelete = index(firstCluster, clusters[firstCluster].min);
 				min = toDelete;
@@ -160,7 +158,6 @@ public class VanEmdeBoasNode {
 	public Integer getNext(int i) {
 		if (universo == 2) {
 			if (i == 0 && max != null && max == 1) {
-				System.out.println("Uno");
 				return 1;
 			} else {
 				return null;
@@ -171,11 +168,7 @@ public class VanEmdeBoasNode {
 			Integer maxLow = clusters[high(i)].max;
 			if (maxLow != null && low(i) < maxLow) {
 				int offset = clusters[high(i)].getNext(low(i));
-				System.out.println("Tres");
-				System.out.println("Value tres: " + index(high(i), offset));
 				if (index(high(i), offset) != i) {
-					System.out.println("index i offset: " + index(high(i), offset));
-					System.out.println("I: " + i);
 					return index(high(i), offset);
 				} else {
 					return null;
@@ -186,7 +179,6 @@ public class VanEmdeBoasNode {
 					return null;
 				} else {
 					int offset = clusters[succesorCluster].min;
-					System.out.println("Cuatro");
 					return index(succesorCluster, offset);
 				}
 			}

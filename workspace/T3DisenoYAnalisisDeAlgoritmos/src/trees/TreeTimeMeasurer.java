@@ -8,66 +8,66 @@ public class TreeTimeMeasurer {
 		this.tree = tree;
 	}
 	
-	public long measureInsert(int i) {
+	public int measureInsert(int i) {
 		long start = System.nanoTime();
 		tree.insert(i);
 		long end = System.nanoTime();
-		return (end - start);
+		return (int) (end - start);
 	}
 	
 	public TuplaTimeOperationResult measureFind(int i) {
 		long start = System.nanoTime();
 		boolean operationResult = tree.find(i);
 		long end = System.nanoTime();
-		return new TuplaTimeOperationResult((end - start), operationResult);
+		return new TuplaTimeOperationResult((int) (end - start), operationResult);
 	}
 	
 	public TuplaTimeOperationResult measureDelete(int i) {
 		long start = System.nanoTime();
 		boolean operationResult = tree.delete(i);
 		long end = System.nanoTime();
-		return new TuplaTimeOperationResult((end - start), operationResult);
+		return new TuplaTimeOperationResult((int) (end - start), operationResult);
 	}
 	
-	public long measureMax() {
+	public int measureMax() {
 		long start = System.nanoTime();
 		tree.getMax();
 		long end = System.nanoTime();
-		return (end - start);
+		return (int) (end - start);
 	}
 	
-	public long measureMin() {
+	public int measureMin() {
 		long start = System.nanoTime();
 		tree.getMin();
 		long end = System.nanoTime();
-		return (end - start);
+		return (int) (end - start);
 	}
 	
-	public long measureNext(int i) {
+	public int measureNext(int i) {
 		long start = System.nanoTime();
 		tree.getNext(i);
 		long end = System.nanoTime();
-		return (end - start);
+		return (int) (end - start);
 	}
 	
-	public long measurePrevious(int i) {
+	public int measurePrevious(int i) {
 		long start = System.nanoTime();
 		tree.getPrevious(i);
 		long end = System.nanoTime();
-		return (end - start);
+		return (int) (end - start);
 	}
 	
 	public class TuplaTimeOperationResult {
 		
-		private long time;
+		private int time;
 		private boolean operationResult;
 		
-		public TuplaTimeOperationResult(long time, boolean operationResult) {
+		public TuplaTimeOperationResult(int time, boolean operationResult) {
 			this.time = time;
 			this.operationResult = operationResult;
 		}
 		
-		public long getTime() {
+		public int getTime() {
 			return time;
 		}
 		
