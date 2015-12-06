@@ -21,13 +21,6 @@ public class VanEmdeBoasNode {
 		min = null;
 		universo = size;
 		raizUniversoTop = (int) Math.pow(2, Math.ceil(log2(universo)/2));
-		if (universo == 8) {
-		//System.out.println("Universo: " + size);
-		//System.out.println("log 2 universo: " + log2(universo));
-		//System.out.println("Math ceil log2/2: " + Math.ceil(log2(universo/2)));
-		//System.out.println("Math pow: " +  Math.pow(2, Math.ceil(log2(universo)/2)));
-		//System.out.println("Raiz universo top: " + raizUniversoTop);
-		}
 		raizUniversoBottom = (int) Math.pow(2, Math.ceil(log2(universo)/2));
 		initializeChildren(size, raizUniversoTop);
 	}

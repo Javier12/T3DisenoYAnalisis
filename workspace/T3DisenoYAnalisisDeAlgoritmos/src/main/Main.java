@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Random;
 
+import com.javamex.classmexer.MemoryUtil;
+
 import trees.ABBTree;
 import trees.AVLTree;
 import trees.SplayTree;
@@ -21,27 +23,28 @@ public class Main {
 	private static final int VEB = 3;
 
 	public static void main(String[] args) throws Exception {
+		long maxMemory = Runtime.getRuntime().maxMemory();
+		/* Maximum amount of memory the JVM will attempt to use */
+		System.out.println(Long.MAX_VALUE);
+		System.out.println("Maximum memory (bytes): " + 
+		(maxMemory == Long.MAX_VALUE ? "no limit" : maxMemory));
 		//----------------
 		//----Prueba 1----
 		//----------------
-		/*
+		
 		System.out.println("Probando ABB universo 2^21");
-		testStack(0, (int) Math.pow(2, 21), ABB);
+		testPrimera(0, (int) Math.pow(2, 21), ABB);
 		System.out.println("Probando AVL universo 2^21");
-		testStack(0, (int) Math.pow(2, 21), AVL);
+		testPrimera(0, (int) Math.pow(2, 21), AVL);
 		System.out.println("Probando Splay universo 2^21");
-		testStack(0, (int) Math.pow(2, 21), SPL);
-		System.out.println("Probando VanEmdeBoas universo 2^21");
-		testStack(0, (int) Math.pow(2, 21), VEB);
+		testPrimera(0, (int) Math.pow(2, 21), SPL);
 		
 		System.out.println("Probando ABB universo 2^25");
-		testStack(0, (int) Math.pow(2, 25), ABB);
+		testPrimera(0, (int) Math.pow(2, 25), ABB);
 		System.out.println("Probando AVL universo 2^25");
-		testStack(0, (int) Math.pow(2, 25), AVL);
+		testPrimera(0, (int) Math.pow(2, 25), AVL);
 		System.out.println("Probando Splay universo 2^25");
-		testStack(0, (int) Math.pow(2, 25), SPL);
-		System.out.println("Probando VanEmdeBoas universo 2^25");
-		testStack(0, (int) Math.pow(2, 25), VEB);
+		testPrimera(0, (int) Math.pow(2, 25), SPL);
 		
 		//----------------
 		//----Prueba 2----
@@ -52,8 +55,6 @@ public class Main {
 		testSegunda(0, (int) Math.pow(2, 21), AVL);
 		System.out.println("Probando Segunda Splay universo 2^21");
 		testSegunda(0, (int) Math.pow(2, 21), SPL);
-		System.out.println("Probando Segunda VanEmdeBoas universo 2^21");
-		testSegunda(0, (int) Math.pow(2, 21), VEB);
 		
 		System.out.println("Probando Segunda ABB universo 2^25");
 		testSegunda(0, (int) Math.pow(2, 25), ABB);
@@ -61,9 +62,6 @@ public class Main {
 		testSegunda(0, (int) Math.pow(2, 25), AVL);
 		System.out.println("Probando Segunda Splay universo 2^25");
 		testSegunda(0, (int) Math.pow(2, 25), SPL);
-		System.out.println("Probando Segunda VanEmdeBoas universo 2^25");
-		testSegunda(0, (int) Math.pow(2, 25), VEB);
-		*/
 		//----------------
 		//----Prueba 3----
 		//----------------
@@ -73,14 +71,27 @@ public class Main {
 		testTercera(0, (int) Math.pow(2, 21), AVL);
 		System.out.println("Probando Tercera Splay universo 2^21");
 		testTercera(0, (int) Math.pow(2, 21), SPL);
-		System.out.println("Probando Tercera VanEmdeBoas universo 2^21");
-		testTercera(0, (int) Math.pow(2, 21), VEB);
 		System.out.println("Probando Tercera ABB universo 2^25");
 		testTercera(0, (int) Math.pow(2, 25), ABB);
 		System.out.println("Probando Tercera AVL universo 2^25");
 		testTercera(0, (int) Math.pow(2, 25), AVL);
 		System.out.println("Probando Tercera Splay universo 2^25");
 		testTercera(0, (int) Math.pow(2, 25), SPL);
+
+		
+		//---------------
+		//---Pruebas VEB-
+		//---------------
+		System.out.println("Probando VanEmdeBoas universo 2^21");
+		testPrimera(0, (int) Math.pow(2, 21), VEB);
+		System.out.println("Probando VanEmdeBoas universo 2^25");
+		testPrimera(0, (int) Math.pow(2, 25), VEB);
+		System.out.println("Probando Segunda VanEmdeBoas universo 2^21");
+		testSegunda(0, (int) Math.pow(2, 21), VEB);
+		System.out.println("Probando Segunda VanEmdeBoas universo 2^25");
+		testSegunda(0, (int) Math.pow(2, 25), VEB);
+		System.out.println("Probando Tercera VanEmdeBoas universo 2^21");
+		testTercera(0, (int) Math.pow(2, 21), VEB);
 		System.out.println("Probando Tercera VanEmdeBoas universo 2^25");
 		testTercera(0, (int) Math.pow(2, 25), VEB);
 		
@@ -98,8 +109,10 @@ public class Main {
 	public static void testPrimera(int universoStart, int universoEnd, int tree) throws Exception {
 		Random r = new Random();
 		long s = System.nanoTime();
-		TreeTimeMeasurer treeMeasurer = new TreeTimeMeasurer(getTreeForInt(tree, universoEnd));
+		Tree mtree = getTreeForInt(tree, universoEnd);
+		TreeTimeMeasurer treeMeasurer = new TreeTimeMeasurer(mtree);
 		long e = System.nanoTime();
+		long inserciones = 0;
 		long insertResults = 0;
 		long sucesorResults = 0;
 		long antesesorResults = 0;
@@ -109,37 +122,45 @@ public class Main {
 		long deleteResults = 0;
 		
 		
-		// Se insertaran bloques con un tamano de el 10% del universo
-		
-		
-		// Insercion
-		int index = 0;
-		for (int i = universoStart; i <= universoEnd; i++) {
-			insertResults = insertResults + treeMeasurer.measureInsert(i);
-			index++;
+		// Se insertaran bloques desordenados con un tamano de el 5% del universo
+		int currentStart = universoStart;
+		int[] portionToInsert = new int[(int) (((universoEnd - universoStart)*0.05) + 1)];
+		for (int mi = 0; mi <= 19; mi++) {
+			int portionIndex = 0;
+			for (int i = currentStart; i < currentStart + (universoEnd - universoStart)*0.05; i++) {
+				portionToInsert[portionIndex] = i;
+				portionIndex++;
+			}
+			shuffleArray(portionToInsert);
+			for (int mint : portionToInsert) {
+				insertResults = insertResults + treeMeasurer.measureInsert(mint);
+				inserciones++;
+			}
+			currentStart = currentStart + portionIndex;
+			System.out.println("Insertados 5% del universo");
 		}
+	
 		System.out.println("Insercion terminado");
+		
+		long bytesUsed = MemoryUtil.deepMemoryUsageOf(mtree);
+		System.out.println("Medir memoria terminado: " + bytesUsed);
+		
 		// Sucesor
-		index = 0;
 		for (int i = universoStart; i <= universoEnd; i++) {
 			sucesorResults = sucesorResults + treeMeasurer.measureNext(i);
-			index++;
 		}
 		System.out.println("Sucesor terminado");
 		// Antesesor
-		index = 0;
 		for (int i = universoStart; i <= universoEnd; i++) {
-			antesesorResults = antesesorResults + treeMeasurer.measureInsert(i);
-			index++;
+			antesesorResults = antesesorResults + treeMeasurer.measurePrevious(i);
 		}
-		
+		System.out.println("Antesesor terminado");
 		maxResult = treeMeasurer.measureMax();
 		System.out.println("Maximo terminado");
 		minResult = treeMeasurer.measureMin();
 		System.out.println("Minimo terminado");
 		
 		
-		System.out.println("Antesesor terminado");
 		// Busqueda
 		for (int i = 0; i <= (universoEnd - universoStart)*5; i++) {
 			int buscar = r.nextInt(universoEnd) + universoStart;
@@ -147,21 +168,21 @@ public class Main {
 		}
 		System.out.println("Busqueda terminada");
 		// Borrado
-		index = 0;
 		for (int i = universoEnd; i >= universoStart; i--) {
 			deleteResults = deleteResults + treeMeasurer.measureDelete(i).getTime();
-			index++;
 		}
 		System.out.println("Borrado terminado");
 		PrintWriter writer = new PrintWriter("results_test_1_universo_" + (universoEnd - universoStart + 1) + "_" + getStringTreeForInt(tree) + ".txt", "UTF-8");
 		writer.println("Tiempo inicializado: " + (e - s));
-		writer.println("Tiempos (sum " + (universoEnd - universoStart + 1) + ") insercion: " + insertResults);
+		writer.println("Tiempos (sum " + inserciones + ") insercion: " + insertResults);
 		writer.println("Tiempo buscar maximo: " + maxResult);
 		writer.println("Tiempo buscar minimo: " + minResult);
 		writer.println("Tiempos (sum " + (universoEnd - universoStart + 1) + ") buscar sucesor: " + sucesorResults);
 		writer.println("Tiempos (sum " + (universoEnd - universoStart + 1) + ") buscar antesesor: " + antesesorResults);
 		writer.println("Tiempos (sum " + ((universoEnd - universoStart)*5) + " ) busqueda: " + searchResults);
 		writer.println("Tiempos (sum " + (universoEnd - universoStart + 1) + ") borrado:" + deleteResults);
+		writer.println("Ints insertados: " + inserciones);
+		writer.println("Memoria: " + bytesUsed);
 		writer.close();
 		
 	}
@@ -177,7 +198,8 @@ public class Main {
 		Random r = new Random();
 		Tree copyTree = getTreeForInt(tree, universoEnd);
 		long s = System.nanoTime();
-		TreeTimeMeasurer treeMeasurer = new TreeTimeMeasurer(getTreeForInt(tree, universoEnd));
+		Tree mtree = getTreeForInt(tree, universoEnd);
+		TreeTimeMeasurer treeMeasurer = new TreeTimeMeasurer(mtree);
 		long e = System.nanoTime();
 		long insertResults = 0;
 		long sucesorResults = 0;
@@ -205,18 +227,16 @@ public class Main {
 			insertionIndex++;
 		}
 		System.out.println("Insercion terminado");
-		// Sucesor
-		int index = 0;
+		
+		long bytesUsed = MemoryUtil.deepMemoryUsageOf(mtree);
+		System.out.println("Medir memoria terminado: " + bytesUsed);
+		
 		for (int i = universoStart; i <= universoEnd; i++) {
 			sucesorResults = sucesorResults + treeMeasurer.measureNext(i);
-			index++;
 		}
 		System.out.println("Sucesor terminado");
-		// Antesesor
-		index = 0;
 		for (int i = universoStart; i <= universoEnd; i++) {
-			antesesorResults = antesesorResults + treeMeasurer.measureInsert(i);
-			index++;
+			antesesorResults = antesesorResults + treeMeasurer.measurePrevious(i);
 		}	
 		System.out.println("Antesesor terminado");
 		maxResult = treeMeasurer.measureMax();
@@ -261,6 +281,8 @@ public class Main {
 		writer.println("Tiempos (sum " + unsuccesfullSearches + " ) busqueda unsuccesfull: " + unsuccesfullSearchResults);
 		writer.println("Tiempos (sum " + succesfullDeletes + ") borrado succesfull:" + succesfullDeleteResults);
 		writer.println("Tiempos (sum " + unsuccesfullDeletes + ") borrado:" + unsuccesfullDeleteResults);
+		writer.println("Ints insertados: " + insertionIndex);
+		writer.println("Memoria: " + bytesUsed);
 		writer.close();
 	}
 	
@@ -274,7 +296,8 @@ public class Main {
 	public static void testTercera(int universoStart, int universoEnd, int tree) throws Exception {
 		Random r = new Random();
 		long s = System.nanoTime();
-		TreeTimeMeasurer treeMeasurer = new TreeTimeMeasurer(getTreeForInt(tree, universoEnd));
+		Tree mtree = getTreeForInt(tree, universoEnd);
+		TreeTimeMeasurer treeMeasurer = new TreeTimeMeasurer(mtree);
 		long e = System.nanoTime();
 		long insertResults = 0;
 		long sucesorResults = 0;
@@ -297,12 +320,13 @@ public class Main {
 		}
 		Collections.shuffle(shuffleInsert);
 		
-		int index = 0;
 		for (Integer mint : shuffleInsert) {
 			insertResults = insertResults + treeMeasurer.measureInsert(mint);
-			index++;
 		}
 		System.out.println("Terminado insert");
+		
+		long bytesUsed = MemoryUtil.deepMemoryUsageOf(mtree);
+		System.out.println("Medir memoria terminado: " + bytesUsed);
 		
 		// Definimos bloques mas activos para busqueda y borrado
 		int shuffleSize = shuffleInsert.size();
@@ -390,18 +414,12 @@ public class Main {
 			}
 		}
 		System.out.println("Borrado terminado");
-		// Sucesor
-		index = 0;
 		for (int i = universoStart; i <= universoEnd; i++) {
 			sucesorResults = sucesorResults + treeMeasurer.measureNext(i);
-			index++;
 		}
 		System.out.println("Sucesor terminado");
-		// Antesesor
-		index = 0;
 		for (int i = universoStart; i <= universoEnd; i++) {
-			antesesorResults = antesesorResults + treeMeasurer.measureInsert(i);
-			index++;
+			antesesorResults = antesesorResults + treeMeasurer.measurePrevious(i);
 		}	
 		System.out.println("Antesesor terminado");
 		maxResult = treeMeasurer.measureMax();
@@ -433,7 +451,29 @@ public class Main {
 		writer.println("Tiempos (sum " + lowSDeleteCounter + ") borrado succesfull low:" + succesfullLowDeleteResults);
 		writer.println("Tiempos (sum " + lowFDeleteCounter + ") borrado unsuccefull low:" + unsuccesfullLowDeleteResults);
 		
+		writer.println("Ints insertados: " + (universoEnd - universoStart + 1));
+		writer.println("Memoria: " + bytesUsed);
+		
 		writer.close();
+	}
+	
+	/**
+	 * Funcion utilitaria para revolver arreglos
+	 * @param array
+	 */
+	private static void shuffleArray(int[] array) {
+	    int index;
+	    Random random = new Random();
+	    for (int i = array.length - 1; i > 0; i--)
+	    {
+	        index = random.nextInt(i + 1);
+	        if (index != i)
+	        {
+	            array[index] ^= array[i];
+	            array[i] ^= array[index];
+	            array[index] ^= array[i];
+	        }
+	    }
 	}
 	
 	
